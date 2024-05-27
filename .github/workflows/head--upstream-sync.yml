@@ -51,7 +51,7 @@ jobs:
           local stderr_log="${log_fn_base}.stderr.log"
           local cmd_str=$(
             for (( i = 0 ; i < $# - 1 ; i++ )) ; do
-              [[ "$arg" =~ \s ]] && printf "\x27%s\x27" "$arg" || printf "%s" "$arg"
+              [[ "${!i}" =~ \s ]] && printf "\x27%s\x27" "${!i}" || printf "%s" "${!i}"
               (( i < $# )) && echo " " || true
             done
           )
