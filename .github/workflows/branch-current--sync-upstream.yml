@@ -39,19 +39,19 @@ jobs:
 
     - name: Add remote
       run: |
-        [[ -n "${UPSTREAM_SYNC_REMOTE_NAME}" ]]
-        [[ -n "${UPSTREAM_SYNC_REMOTE_URL}" ]]
-        git remote add "${UPSTREAM_SYNC_REMOTE_NAME}" "${UPSTREAM_SYNC_REMOTE_URL}"
-        git remote --verbose
-        git remote show "${UPSTREAM_SYNC_REMOTE_NAME}"
-        git config --show-scope --get-regexp ^ 2>&1 | sed 's/^/::debug::/' || true
+        [[  -n  "${UPSTREAM_SYNC_REMOTE_NAME}"  ]]
+        [[  -n  "${UPSTREAM_SYNC_REMOTE_URL}"  ]]
+        git  remote  add  "${UPSTREAM_SYNC_REMOTE_NAME}" "${UPSTREAM_SYNC_REMOTE_URL}"
+        git  remote  --verbose  ||  true
+        git  remote  show  "${UPSTREAM_SYNC_REMOTE_NAME}"  ||  true
+        git  config  --show-scope  --get-regexp  ^  2>&1  |  sed  's/^/::debug::/'  ||  true
 
     - name: Pull
       run: |
-        [[ -n "${UPSTREAM_SYNC_REMOTE_NAME}" ]]
-        git pull "${UPSTREAM_SYNC_REMOTE_NAME}"
+        [[  -n  "${UPSTREAM_SYNC_REMOTE_NAME}"  ]]
+        git  pull  "${UPSTREAM_SYNC_REMOTE_NAME}"  "HEAD"
 
     - name: Push
       run: |
-        [[ -n "${UPSTREAM_SYNC_LOCAL_BRANCH}" ]]
-        git push origin "${UPSTREAM_SYNC_LOCAL_BRANCH}"
+        [[  -n  "${UPSTREAM_SYNC_LOCAL_BRANCH}"  ]]
+        git  push  origin  "${UPSTREAM_SYNC_LOCAL_BRANCH}"
