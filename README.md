@@ -1,6 +1,6 @@
 # Gentoo
 
-## Upstream HEAD branches
+## Copies of upstream HEAD branches
 
 ### [Current [mirror]](../../tree/head)
 
