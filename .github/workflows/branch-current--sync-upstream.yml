@@ -23,7 +23,7 @@ jobs:
 
     defaults:
       run:
-        shell: bash
+        shell: bash --noprofile --norc -o errexit -o pipefail -o nounset -o verbose -o xtrace {0}
 
     env:
       UPSTREAM_SYNC_LOCAL_BRANCH: ${{ vars.UPSTREAM_SYNC_LOCAL_BRANCH }}
@@ -43,6 +43,7 @@ jobs:
         [[ -n "${UPSTREAM_SYNC_REMOTE_URL}" ]]
         git remote add "${UPSTREAM_SYNC_REMOTE_NAME}" "${UPSTREAM_SYNC_REMOTE_URL}"
         git remote --verbose
+        git remote show "${UPSTREAM_SYNC_REMOTE_NAME}"
         git config --show-scope --get-regexp ^ 2>&1 | sed 's/^/::debug::/' || true
 
     - name: Pull
