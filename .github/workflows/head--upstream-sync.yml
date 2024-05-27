@@ -38,17 +38,24 @@ jobs:
 
     - name: Config
       run: |
+        export GIT_LOG_DIR="$HOME/git-logs"
+        printf "GIT_LOG_DIR=%s\n" "${GIT_LOG_DIR}" >> "${GITHUB_ENV}"
+        mkdir -vp "${GIT_LOG_DIR}"
+        
         export GIT_LOG="$HOME/git.log"
         printf "GIT_LOG=%s\n" "${GIT_LOG}" >> "${GITHUB_ENV}"
 
         git_n_log() {
+          local log_fn_base="$(date +%s%N)"
+          local stdout_log="${log_fn_base}.stdout.log"
+          local stderr_log="${log_fn_base}.stderr.log"
           local cmd_str=$(
             printf "%s " "git"
             for arg in "${@}"; do
               [[ "$arg" =~ \s ]] && printf "\x27%s\x27 " "$arg" || printf "%s " "$arg"
             done
           )
-          printf "<details><summary>%s</summary>\n" "$(printf "%s" ${cmd_str} | sed 's/([<>])/\\\1/')" >> "${GIT_LOG}"
+          printf "<details><summary>%s</summary>\n" "${cmd_str}" >> "${GIT_LOG}"
           printf '```console\n' >> "${GIT_LOG}"
           printf "git@actions> %s" "${cmd_str}" >> "${GIT_LOG}"
           printf "%s\n" "${cmd_str}"
@@ -85,7 +92,7 @@ jobs:
       continue-on-error: true
       run: |
         echo "# Hello world!" >> "${GITHUB_STEP_SUMMARY}"
-        printf "%s\n" '```console' >> "${GITHUB_STEP_SUMMARY}"
+        #printf "%s\n" '```console' >> "${GITHUB_STEP_SUMMARY}"
         cat "${GIT_LOG}" | sed 's/```/\```/' >> "${GITHUB_STEP_SUMMARY}"
-        printf "%s\n" '```' >> "${GITHUB_STEP_SUMMARY}"
+        #printf "%s\n" '```' >> "${GITHUB_STEP_SUMMARY}"
         printf "%s\n" >> "${GITHUB_STEP_SUMMARY}"
