@@ -1,4 +1,4 @@
-# Gentoo
+# Gentoo Linux
 
 ## Copies of upstream HEAD branches
 
