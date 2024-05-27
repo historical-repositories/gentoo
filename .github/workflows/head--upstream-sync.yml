@@ -40,12 +40,15 @@ jobs:
       run: |
         export GIT_LOG="$HOME/git.log"
         printf "GIT_LOG=%s\n" "${GIT_LOG}" >> "${GITHUB_ENV}"
+
         git_n_log() {
           printf "git@actions> " >> "${GIT_LOG}"
           printf "'%s' " git "${@}" >> "${GIT_LOG}"
           printf "\n" >> "${GIT_LOG}"
-          git "${@}"
+          # now comes the fun part
+          git "${@}" > >( tee -a "${GIT_LOG}" | sed 's/^//' ) 2> >(tee -a "${GIT_LOG}" | sed 's/^/::warning title=::/')
         }
+
         declare -p -f > ~/funcs.sh
 
     - name: Add remote
