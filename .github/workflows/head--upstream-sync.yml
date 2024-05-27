@@ -48,6 +48,7 @@ jobs:
         run_n_log() {
           local log_fn_base="${RUN_N_LOG_DIR}/$(date +%s%N).$(basename "${1}")"
           local cmd_log="${log_fn_base}.cmd.log"
+          local summary_log="${log_fn_base}.summary.log"
           local stdout_log="${log_fn_base}.stdout.log"
           local stderr_log="${log_fn_base}.stderr.log"
           local cmd_str=$(
@@ -56,12 +57,12 @@ jobs:
               (( i < $# - 1 )) && printf " " || true ; done ; )
           printf "%s" "${cmd_str}" > "${cmd_log}"
           printf "%s\n" "${cmd_str}"
-          printf "<details><summary><code>%s</code></summary>\n" "${cmd_str}" >> "${GITHUB_STEP_SUMMARY}"
-          printf '\n```console\n' >> "${GITHUB_STEP_SUMMARY}"  # codeblock requires blank line before
-          printf "git@actions> %s\n" "${cmd_str}" >> "${GITHUB_STEP_SUMMARY}"
-          "${@}" > >(tee -a "${stdout_log}" "${GITHUB_STEP_SUMMARY}")  2> >(tee -a "${stderr_log}" "${GITHUB_STEP_SUMMARY}")
+          printf "<details><summary><code>%s</code></summary>\n" "${cmd_str}" >> "${summary_log}"
+          printf '\n```console\n' >> "${summary_log}"  # codeblock requires blank line before
+          printf "git@actions> %s\n" "${cmd_str}" >> "${summary_log}"
+          "${@}" > >(tee -a "${stdout_log}" "${summary_log}")  2> >(tee -a "${stderr_log}" "${summary_log}")
           sleep 0.1 || true  # wait for all the subshells to stop writing to files
-          printf '\n```\n</details>\n' >> "${GITHUB_STEP_SUMMARY}"
+          printf '\n```\n</details>\n' >> "${summary_log}"
         }
 
         declare -p -f > ~/funcs.sh
@@ -93,4 +94,6 @@ jobs:
       continue-on-error: true
       run: |
          # | sed 's/^/::warning title=::/'
+         # TODO parse log files and produce summary
+         cat "${RUN_N_LOG_DIR}"/*.summary.log >> "${GITHUB_STEP_SUMMARY}"
         
