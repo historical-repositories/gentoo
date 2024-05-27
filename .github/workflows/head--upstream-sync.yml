@@ -45,21 +45,21 @@ jobs:
         export GIT_LOG="$HOME/git.log"
         printf "GIT_LOG=%s\n" "${GIT_LOG}" >> "${GITHUB_ENV}"
 
-        git_n_log() {
+        run_n_log() {
           local log_fn_base="$(date +%s%N)"
           local stdout_log="${log_fn_base}.stdout.log"
           local stderr_log="${log_fn_base}.stderr.log"
           local cmd_str=$(
-            printf "%s " "git"
-            for arg in "${@}"; do
-              [[ "$arg" =~ \s ]] && printf "\x27%s\x27 " "$arg" || printf "%s " "$arg"
+            for (( i = 0 ; i < $# - 1 ; i++ )) ; do
+              [[ "$arg" =~ \s ]] && printf "\x27%s\x27" "$arg" || printf "%s" "$arg"
+              (( i < $# )) && echo " " || true
             done
           )
           printf "\n<details><summary><code>%s</code></summary>\n" "${cmd_str}" >> "${GITHUB_STEP_SUMMARY}"
           printf '```console\n' >> "${GITHUB_STEP_SUMMARY}"
           printf "git@actions> %s" "${cmd_str}" >> "${GITHUB_STEP_SUMMARY}"
           printf "%s\n" "${cmd_str}"
-          git "${@}" > >(tee "${stdout_log}" | sed 's/^//')  2> >(tee -a "${stderr_log}" | sed 's/^/::warning title=::/')
+          "${@}" > >(tee "${stdout_log}" | sed 's/^//')  2> >(tee -a "${stderr_log}" | sed 's/^/::warning title=::/')
           printf '\n```\n</details>\n' >> "${GITHUB_STEP_SUMMARY}"
         }
 
