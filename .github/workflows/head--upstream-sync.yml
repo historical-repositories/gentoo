@@ -55,12 +55,12 @@ jobs:
               [[ "$arg" =~ \s ]] && printf "\x27%s\x27 " "$arg" || printf "%s " "$arg"
             done
           )
-          printf "<details><summary>%s</summary>\n" "${cmd_str}" >> "${GIT_LOG}"
-          printf '```console\n' >> "${GIT_LOG}"
-          printf "git@actions> %s" "${cmd_str}" >> "${GIT_LOG}"
+          printf "\n<details><summary><code>%s</code></summary>\n" "${cmd_str}" >> "${GITHUB_STEP_SUMMARY}"
+          printf '```console\n' >> "${GITHUB_STEP_SUMMARY}"
+          printf "git@actions> %s" "${cmd_str}" >> "${GITHUB_STEP_SUMMARY}"
           printf "%s\n" "${cmd_str}"
-          git "${@}" > >(tee -a "${GIT_LOG}" | sed 's/^//') 2> >(tee -a "${GIT_LOG}" | sed 's/^/::warning title=::/')
-          printf '```\n</details>\n' >> "${GIT_LOG}"
+          git "${@}" > >(tee "${stdout_log}" | sed 's/^//')  2> >(tee -a "${stderr_log}" | sed 's/^/::warning title=::/')
+          printf '\n```\n</details>\n' >> "${GITHUB_STEP_SUMMARY}"
         }
 
         declare -p -f > ~/funcs.sh
@@ -91,8 +91,9 @@ jobs:
       if: ${{  always()  }}
       continue-on-error: true
       run: |
-        echo "# Hello world!" >> "${GITHUB_STEP_SUMMARY}"
+        tree "${GIT_LOG_DIR}" || true
+        # echo "# Hello world!" >> "${GITHUB_STEP_SUMMARY}"
         #printf "%s\n" '```console' >> "${GITHUB_STEP_SUMMARY}"
-        cat "${GIT_LOG}" | sed 's/```/\```/' >> "${GITHUB_STEP_SUMMARY}"
+        #cat "${GIT_LOG}" | sed 's/```/\```/' >> "${GITHUB_STEP_SUMMARY}"
         #printf "%s\n" '```' >> "${GITHUB_STEP_SUMMARY}"
-        printf "%s\n" >> "${GITHUB_STEP_SUMMARY}"
+        #printf "%s\n" >> "${GITHUB_STEP_SUMMARY}"
