@@ -8,6 +8,12 @@ on:
     - cron: '42/30 * * * *'
   workflow_dispatch:
 
+env:
+  UPSTREAM_SYNC_LOCAL_BRANCH: ${{ vars.UPSTREAM_SYNC_LOCAL_BRANCH }}
+  UPSTREAM_SYNC_REMOTE_NAME: ${{ vars.UPSTREAM_SYNC_REMOTE_NAME }}
+  UPSTREAM_SYNC_REMOTE_URL: ${{ vars.UPSTREAM_SYNC_REMOTE_URL }}
+  UPSTREAM_SYNC_REMOTE_BRANCH: ${{ vars.UPSTREAM_SYNC_REMOTE_BRANCH }}
+
 jobs:
   sync:
     runs-on: ubuntu-latest
@@ -22,7 +28,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
       with:
-        ref: ${{ vars.UPSTREAM_SYNC_LOCAL_BRANCH || 0/0 }}
+        ref: ${{ env.UPSTREAM_SYNC_LOCAL_BRANCH }}
         fetch-depth: 0
 
     - name: Config
@@ -33,17 +39,24 @@ jobs:
 
     - name: Remote add
       run: |
-        git remote add ${{ vars.UPSTREAM_SYNC_REMOTE_NAME || 0/0}} ${{ vars.UPSTREAM_SYNC_REMOTE_URL || 0/0 }}
+        [[ -n "${UPSTREAM_SYNC_REMOTE_NAME}" ]]
+        [[ -n "${UPSTREAM_SYNC_REMOTE_URL}" ]]
+        git remote add "${UPSTREAM_SYNC_REMOTE_NAME}" "${UPSTREAM_SYNC_REMOTE_URL}"
         git remote --verbose
 
     - name: Fetch
       run: |
-        git fetch ${{ vars.UPSTREAM_SYNC_REMOTE_NAME || 0/0 }} ${{ vars.UPSTREAM_SYNC_REMOTE_BRANCH || 0/0 }}
+        [[ -n "${UPSTREAM_SYNC_REMOTE_NAME}" ]]
+        [[ -n "${UPSTREAM_SYNC_REMOTE_BRANCH}" ]]
+        git fetch "${UPSTREAM_SYNC_REMOTE_NAME}" "${UPSTREAM_SYNC_REMOTE_BRANCH}"
 
     - name: Reset to upstream changes
       run: |
-        git reset --hard ${{ vars.UPSTREAM_SYNC_REMOTE_NAME || 0/0 }}/${{ vars.UPSTREAM_SYNC_REMOTE_BRANCH || 0/0 }}
+        [[ -n "${UPSTREAM_SYNC_REMOTE_NAME}" ]]
+        [[ -n "${UPSTREAM_SYNC_REMOTE_BRANCH}" ]]
+        git reset --hard "${UPSTREAM_SYNC_REMOTE_NAME}"/"${UPSTREAM_SYNC_REMOTE_BRANCH}"
 
     - name: Push
       run: |
-        git push --force origin ${{ vars.UPSTREAM_SYNC_LOCAL_BRANCH || 0/0 }}
+        [[ -n "${UPSTREAM_SYNC_LOCAL_BRANCH}" ]]
+        git push --force origin "${UPSTREAM_SYNC_LOCAL_BRANCH}"
