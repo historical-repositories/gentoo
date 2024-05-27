@@ -1,4 +1,4 @@
-name: "Branch 'current' - Sync Upstream"
+name: "Sync with upstream on the 'current' branch"
 
 on:
   push:
@@ -18,10 +18,14 @@ env:
   UPSTREAM_SYNC_REMOTE_BRANCH: ${{ vars.UPSTREAM_SYNC_REMOTE_BRANCH }}
 
 jobs:
-  sync:
+  pull:
+    name: Sync with upstream
     runs-on: ubuntu-latest
 
     environment: sysops-upstream-sync
+
+    permissions:
+      contents: write
 
     defaults:
       run:
@@ -32,7 +36,6 @@ jobs:
       uses: actions/checkout@v4
       with:
         ref: ${{ env.UPSTREAM_SYNC_LOCAL_BRANCH }}
-        fetch-depth: 0
 
     - name: Remote add
       run: |
@@ -43,8 +46,6 @@ jobs:
 
     - name: Config
       run: |
-        git config --global user.name  'GitHub Actions'
-        git config --global user.email 'actions@github.com'
         git config --show-scope --get-regexp ^
 
     - name: Pull
