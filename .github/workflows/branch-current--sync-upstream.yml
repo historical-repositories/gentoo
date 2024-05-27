@@ -8,12 +8,6 @@ on:
 concurrency:
   group: sysops-upstream-sync
 
-env:
-  UPSTREAM_SYNC_LOCAL_BRANCH: ${{ vars.UPSTREAM_SYNC_LOCAL_BRANCH }}
-  UPSTREAM_SYNC_REMOTE_NAME: ${{ vars.UPSTREAM_SYNC_REMOTE_NAME }}
-  UPSTREAM_SYNC_REMOTE_URL: ${{ vars.UPSTREAM_SYNC_REMOTE_URL }}
-  UPSTREAM_SYNC_REMOTE_BRANCH: ${{ vars.UPSTREAM_SYNC_REMOTE_BRANCH }}
-
 jobs:
   pull:
     name: Sync with upstream
@@ -28,13 +22,19 @@ jobs:
       run:
         shell: bash
 
+    env:
+      UPSTREAM_SYNC_LOCAL_BRANCH: ${{ vars.UPSTREAM_SYNC_LOCAL_BRANCH }}
+      UPSTREAM_SYNC_REMOTE_NAME: ${{ vars.UPSTREAM_SYNC_REMOTE_NAME }}
+      UPSTREAM_SYNC_REMOTE_URL: ${{ vars.UPSTREAM_SYNC_REMOTE_URL }}
+
     steps:
+
     - name: Checkout
       uses: actions/checkout@v4
       with:
-        ref: ${{ env.UPSTREAM_SYNC_LOCAL_BRANCH }}
+        ref: ${{ vars.UPSTREAM_SYNC_LOCAL_BRANCH }}
 
-    - name: Remote add
+    - name: Add remote
       run: |
         [[ -n "${UPSTREAM_SYNC_REMOTE_NAME}" ]]
         [[ -n "${UPSTREAM_SYNC_REMOTE_URL}" ]]
@@ -45,8 +45,7 @@ jobs:
     - name: Pull
       run: |
         [[ -n "${UPSTREAM_SYNC_REMOTE_NAME}" ]]
-        [[ -n "${UPSTREAM_SYNC_REMOTE_BRANCH}" ]]
-        git pull "${UPSTREAM_SYNC_REMOTE_NAME}" "${UPSTREAM_SYNC_REMOTE_BRANCH}"
+        git pull "${UPSTREAM_SYNC_REMOTE_NAME}"
 
     - name: Push
       run: |
