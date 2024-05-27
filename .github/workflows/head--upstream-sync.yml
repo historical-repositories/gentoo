@@ -1,4 +1,4 @@
-name: "SysOps: Sync 'head' with upstream"
+name: "Sync our 'head' with upstream HEAD"
 
 on:
   schedule:
@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: sysops--upstream-sync
+  group: ${{ github.workflow_ref }}
 
 jobs:
   pull:
