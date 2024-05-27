@@ -43,7 +43,7 @@ Provides you with full hisotry with unchanged commit hashes across all branches.
 This method works only with your local git clone of this repository and you have to clone all branches cloned.
 
 ```console
-> git clone --no-checkout 'https://github.com/historical-repositories/gentoo.git'
+> git clone --mirror --branch=head 'https://github.com/historical-repositories/gentoo.git'
 ...
 ```
 
