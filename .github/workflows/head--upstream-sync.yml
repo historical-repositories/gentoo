@@ -38,29 +38,43 @@ jobs:
 
     - name: Config
       run: |
-        [[ -n "${UPSTREAM_SYNC_GIT_CONFIG_COLOR_UI}" ]] && git config --global color.ui "${UPSTREAM_SYNC_GIT_CONFIG_COLOR_UI}" || true
+        export GIT_LOG="$HOME/git.log"
+        git_n_log() {
+          printf "git@actions> " >> "${GIT_LOG}"
+          printf "'%s' " git "${@}" >> "${GIT_LOG}"
+          printf "\n" >> "${GIT_LOG}"
+          git "${@}"
+        }
+        declare -p -f > ~/funcs.sh
 
     - name: Add remote
       run: |
         [[  -n  "${UPSTREAM_SYNC_REMOTE_NAME}"  ]]
         [[  -n  "${UPSTREAM_SYNC_REMOTE_URL}"  ]]
-        git  remote  add  "${UPSTREAM_SYNC_REMOTE_NAME}" "${UPSTREAM_SYNC_REMOTE_URL}"
-        git  remote  --verbose  ||  true
-        git  remote  show  "${UPSTREAM_SYNC_REMOTE_NAME}"  ||  true
-        git  config  --show-scope  --get-regexp  ^  2>&1  |  sed  's/^/::debug::/'  ||  true
+        source ~/funcs.sh
+        git_n_log  remote  add  "${UPSTREAM_SYNC_REMOTE_NAME}" "${UPSTREAM_SYNC_REMOTE_URL}"
+        git_n_log  remote  --verbose  ||  true
+        git_n_log  remote  show  "${UPSTREAM_SYNC_REMOTE_NAME}"  ||  true
+        git_n_log  config  --show-scope  --get-regexp  ^  2>&1  |  sed  's/^/::debug::/'  ||  true
 
     - name: Pull
       run: |
         [[  -n  "${UPSTREAM_SYNC_REMOTE_NAME}"  ]]
-        git  pull  "${UPSTREAM_SYNC_REMOTE_NAME}"  "HEAD"
+        source  ~/funcs.sh
+        git_n_log  pull  "${UPSTREAM_SYNC_REMOTE_NAME}"  "HEAD"
 
     - name: Push
       run: |
         [[  -n  "${UPSTREAM_SYNC_LOCAL_BRANCH}"  ]]
-        git  push  origin  "${UPSTREAM_SYNC_LOCAL_BRANCH}"
+        source  ~/funcs.sh
+        git_n_log  push  origin  "${UPSTREAM_SYNC_LOCAL_BRANCH}"
 
     - name: Summary
       if: ${{  always()  }}
       continue-on-error: true
       run: |
         echo "# Hello world!" >> "${GITHUB_STEP_SUMMARY}"
+        printf "%s\n" '```console' >> "${GITHUB_STEP_SUMMARY}"
+        cat "${GIT_LOG}" | sed 's/```/\```/' >> "${GITHUB_STEP_SUMMARY}"
+        printf "%s\n" '```' >> "${GITHUB_STEP_SUMMARY}"
+        printf "%s\n" >> "${GITHUB_STEP_SUMMARY}"
