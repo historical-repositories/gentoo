@@ -47,19 +47,13 @@ jobs:
         git config --global user.email 'actions@github.com'
         git config --show-scope --get-regexp ^
 
-    - name: Fetch
+    - name: Pull
       run: |
         [[ -n "${UPSTREAM_SYNC_REMOTE_NAME}" ]]
         [[ -n "${UPSTREAM_SYNC_REMOTE_BRANCH}" ]]
-        git fetch "${UPSTREAM_SYNC_REMOTE_NAME}" "${UPSTREAM_SYNC_REMOTE_BRANCH}"
-
-    - name: Reset to upstream changes
-      run: |
-        [[ -n "${UPSTREAM_SYNC_REMOTE_NAME}" ]]
-        [[ -n "${UPSTREAM_SYNC_REMOTE_BRANCH}" ]]
-        git reset --hard "${UPSTREAM_SYNC_REMOTE_NAME}"/"${UPSTREAM_SYNC_REMOTE_BRANCH}"
+        git pull "${UPSTREAM_SYNC_REMOTE_NAME}" "${UPSTREAM_SYNC_REMOTE_BRANCH}"
 
     - name: Push
       run: |
         [[ -n "${UPSTREAM_SYNC_LOCAL_BRANCH}" ]]
-        git push --force origin "${UPSTREAM_SYNC_LOCAL_BRANCH}"
+        git push origin "${UPSTREAM_SYNC_LOCAL_BRANCH}"
