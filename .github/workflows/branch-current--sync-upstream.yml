@@ -1,0 +1,46 @@
+name: "Branch 'current' - Sync Upstream"
+
+on:
+  schedule:
+    - cron: '42/30 * * * *'
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    environment: sysops-upstream-sync
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ vars.UPSTREAM_SYNC_LOCAL_BRANCH || 0/0 }}
+        fetch-depth: 0
+
+    - name: Config
+      run: |
+        git config --global user.name  'GitHub Actions'
+        git config --global user.email 'actions@github.com'
+        git config --show-scope --get-regexp ^
+
+    - name: Remote add
+      run: |
+        git remote add ${{ vars.UPSTREAM_SYNC_REMOTE_NAME || 0/0}} ${{ vars.UPSTREAM_SYNC_REMOTE_URL || 0/0 }}
+        git remote --verbose
+
+    - name: Fetch
+      run: |
+        git fetch ${{ vars.UPSTREAM_SYNC_REMOTE_NAME || 0/0 }} ${{ vars.UPSTREAM_SYNC_REMOTE_BRANCH || 0/0 }}
+
+    - name: Reset to upstream changes
+      run: |
+        git reset --hard ${{ vars.UPSTREAM_SYNC_REMOTE_NAME || 0/0 }}/${{ vars.UPSTREAM_SYNC_REMOTE_BRANCH || 0/0 }}
+
+    - name: Push
+      run: |
+        git push --force origin ${{ vars.UPSTREAM_SYNC_LOCAL_BRANCH || 0/0 }}
