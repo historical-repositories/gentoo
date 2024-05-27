@@ -49,7 +49,7 @@ jobs:
         printf "GIT_LOG=%s\n" "${GIT_LOG}" >> "${GITHUB_ENV}"
 
         run_n_log() {
-          local log_fn_base="$(date +%s%N)"
+          local log_fn_base="${GIT_LOG_DIR}/$(date +%s%N)"
           local stdout_log="${log_fn_base}.stdout.log"
           local stderr_log="${log_fn_base}.stderr.log"
           local cmd_str=$(
@@ -57,7 +57,7 @@ jobs:
               [[ "${!i}" =~ [[:space:]] ]] && printf "\x27%s\x27" "${!i}" || printf "%s" "${!i}"
               (( i < $# - 1 )) && printf " " || true ; done ; )
           printf "<details><summary><code>%s</code></summary>\n" "${cmd_str}" >> "${GITHUB_STEP_SUMMARY}"
-          printf '\n```console\n' >> "${GITHUB_STEP_SUMMARY}"
+          printf '\n```console\n' >> "${GITHUB_STEP_SUMMARY}"  # codeblock requires blank line before
           printf "git@actions> %s\n" "${cmd_str}" >> "${GITHUB_STEP_SUMMARY}"
           printf "%s\n" "${cmd_str}"
           "${@}" > >(tee -a "${stdout_log}" "${GITHUB_STEP_SUMMARY}" | sed 's/^//')  2> >(tee -a "${stderr_log}" "${GITHUB_STEP_SUMMARY}" | sed 's/^/::warning title=::/')
