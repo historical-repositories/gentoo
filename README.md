@@ -30,6 +30,8 @@ Gentoo has evolved to support a wide variety of processor architectures and user
 This branch synces with the current upstream HEAD branch several times an hour.
 So you will get always a fresh look at the whole commit history.
 
+[Initial commit](https://github.com/historical-repositories/gentoo/commit/56bd759df1d0c750a065b8c845e93d5dfa6b549d)
+
 ### [Historical 2000-07-28 00:35:42 - 2015-08-08 17:58:28 UTC](../../tree/hist/by-date/20000728T003542Z_20150808T175828Z)
 This branch provides a copy of the original CVS repo officially converted to git by Gentoo Linux maintainers, before they switched wholly to git.
 
