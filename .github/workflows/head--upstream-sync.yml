@@ -41,26 +41,25 @@ jobs:
 
     - name: Config
       run: |
-        export GIT_LOG_DIR="$HOME/git-logs"
-        printf "GIT_LOG_DIR=%s\n" "${GIT_LOG_DIR}" >> "${GITHUB_ENV}"
-        mkdir -vp "${GIT_LOG_DIR}"
-        
-        export GIT_LOG="$HOME/git.log"
-        printf "GIT_LOG=%s\n" "${GIT_LOG}" >> "${GITHUB_ENV}"
+        export RUN_N_LOG_DIR="$HOME/git-logs"
+        printf "RUN_N_LOG_DIR=%s\n" "${RUN_N_LOG_DIR}" >> "${GITHUB_ENV}"
+        mkdir -vp "${RUN_N_LOG_DIR}"
 
         run_n_log() {
-          local log_fn_base="${GIT_LOG_DIR}/$(date +%s%N)"
+          local log_fn_base="${RUN_N_LOG_DIR}/$(date +%s%N).$(basename "${1}")"
+          local cmd_log="${log_fn_base}.cmd.log"
           local stdout_log="${log_fn_base}.stdout.log"
           local stderr_log="${log_fn_base}.stderr.log"
           local cmd_str=$(
             for (( i = 1 ; i < $# ; i++ )) ; do
               [[ "${!i}" =~ [[:space:]] ]] && printf "\x27%s\x27" "${!i}" || printf "%s" "${!i}"
               (( i < $# - 1 )) && printf " " || true ; done ; )
+          printf "%s" "${cmd_str}" > "${cmd_log}"
+          printf "%s\n" "${cmd_str}"
           printf "<details><summary><code>%s</code></summary>\n" "${cmd_str}" >> "${GITHUB_STEP_SUMMARY}"
           printf '\n```console\n' >> "${GITHUB_STEP_SUMMARY}"  # codeblock requires blank line before
           printf "git@actions> %s\n" "${cmd_str}" >> "${GITHUB_STEP_SUMMARY}"
-          printf "%s\n" "${cmd_str}"
-          "${@}" > >(tee -a "${stdout_log}" "${GITHUB_STEP_SUMMARY}" | sed 's/^//')  2> >(tee -a "${stderr_log}" "${GITHUB_STEP_SUMMARY}" | sed 's/^/::warning title=::/')
+          "${@}" > >(tee -a "${stdout_log}" "${GITHUB_STEP_SUMMARY}")  2> >(tee -a "${stderr_log}" "${GITHUB_STEP_SUMMARY}")
           sleep 0.1 || true  # wait for all the subshells to stop writing to files
           printf '\n```\n</details>\n' >> "${GITHUB_STEP_SUMMARY}"
         }
@@ -93,9 +92,5 @@ jobs:
       if: ${{  always()  }}
       continue-on-error: true
       run: |
-        tree "${GIT_LOG_DIR}" || true
-        # echo "# Hello world!" >> "${GITHUB_STEP_SUMMARY}"
-        #printf "%s\n" '```console' >> "${GITHUB_STEP_SUMMARY}"
-        #cat "${GIT_LOG}" | sed 's/```/\```/' >> "${GITHUB_STEP_SUMMARY}"
-        #printf "%s\n" '```' >> "${GITHUB_STEP_SUMMARY}"
-        #printf "%s\n" >> "${GITHUB_STEP_SUMMARY}"
+         # | sed 's/^/::warning title=::/'
+        
