@@ -1,6 +1,9 @@
 name: "Sync with upstream on the 'current' branch"
 
 on:
+  push:
+    branches:
+    - _sysops
   schedule:
     - cron: '42/15 * * * *'
   workflow_dispatch:
