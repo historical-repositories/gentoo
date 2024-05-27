@@ -47,6 +47,7 @@ jobs:
           printf "\n" >> "${GIT_LOG}"
           # now comes the fun part
           git "${@}" > >( tee -a "${GIT_LOG}" | sed 's/^//' ) 2> >(tee -a "${GIT_LOG}" | sed 's/^/::warning title=::/')
+          printf "%\n" >> "${GIT_LOG}"
         }
 
         declare -p -f > ~/funcs.sh
