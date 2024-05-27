@@ -23,7 +23,8 @@ jobs:
 
     defaults:
       run:
-        shell: bash --noprofile --norc -o errexit -o pipefail -o nounset -o verbose -o xtrace {0}
+        # -o verbose -o xtrace
+        shell: bash --noprofile --norc -o errexit -o pipefail -o nounset {0}
 
     env:
       UPSTREAM_SYNC_LOCAL_BRANCH: ${{ vars.UPSTREAM_SYNC_LOCAL_BRANCH }}
@@ -46,11 +47,11 @@ jobs:
         mkdir -vp "${RUN_N_LOG_DIR}"
 
         run_n_log() {
-          local log_fn_base="${RUN_N_LOG_DIR}/$(date +%s%N).$(basename "${1}")"
-          local cmd_log="${log_fn_base}.cmd.log"
-          local summary_log="${log_fn_base}.summary.log"
-          local stdout_log="${log_fn_base}.stdout.log"
-          local stderr_log="${log_fn_base}.stderr.log"
+          local basepath="${RUN_N_LOG_DIR}/$(date +%s%N).$(basename "${1}")"
+          local cmd_log="${basepath}.cmd.log"
+          local summary_log="${basepath}.summary.log"
+          local stdout_log="${basepath}.stdout.log"
+          local stderr_log="${basepath}.stderr.log"
           #local cmd_str=$(
           #  for (( i = 1 ; i < $# ; i++ )) ; do
           #    [[ "${!i}" =~ [[:space:]] ]] && printf "\x27%s\x27" "${!i}" || printf "%s" "${!i}"
