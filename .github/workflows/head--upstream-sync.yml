@@ -42,12 +42,18 @@ jobs:
         printf "GIT_LOG=%s\n" "${GIT_LOG}" >> "${GITHUB_ENV}"
 
         git_n_log() {
-          printf "git@actions> " >> "${GIT_LOG}"
-          printf "'%s' " git "${@}" >> "${GIT_LOG}"
-          printf "\n" >> "${GIT_LOG}"
-          # now comes the fun part
-          git "${@}" > >( tee -a "${GIT_LOG}" | sed 's/^//' ) 2> >(tee -a "${GIT_LOG}" | sed 's/^/::warning title=::/')
-          printf "%\n" >> "${GIT_LOG}"
+          local cmd_str=$(
+            printf "%s " "git"
+            for arg in "${@}"; do
+              [[ "$arg" =~ \s ]] && printf "\x27%s\x27 " "$arg" || printf "%s " "$arg"
+            done
+          )
+          printf "<details><summary>%s</summary>\n" "$(printf "%s" ${cmd_str} | sed 's/([<>])/\\\1/')" >> "${GIT_LOG}"
+          printf '```console\n' >> "${GIT_LOG}"
+          printf "git@actions> %s" "${cmd_str}" >> "${GIT_LOG}"
+          printf "%s\n" "${cmd_str}"
+          git "${@}" > >(tee -a "${GIT_LOG}" | sed 's/^//') 2> >(tee -a "${GIT_LOG}" | sed 's/^/::warning title=::/')
+          printf '```\n</details>\n' >> "${GIT_LOG}"
         }
 
         declare -p -f > ~/funcs.sh
