@@ -3,6 +3,9 @@ name: "Sync our 'head' with upstream HEAD"
 on:
   schedule:
     - cron: '42/15 * * * *'
+  push:
+    paths:
+    - .github/workflows/head--upstream-sync.yml
   workflow_dispatch:
 
 concurrency:
@@ -51,14 +54,14 @@ jobs:
           local stderr_log="${log_fn_base}.stderr.log"
           local cmd_str=$(
             for (( i = 1 ; i < $# ; i++ )) ; do
-              [[ "${!i}" =~ \s ]] && printf "\x27%s\x27" "${!i}" || printf "%s" "${!i}"
+              [[ "${!i}" =~ [[:space:]] ]] && printf "\x27%s\x27" "${!i}" || printf "%s" "${!i}"
               (( i < $# - 1 )) && printf " " || true ; done ; )
-          printf "\n<details><summary><code>%s</code></summary>\n" "${cmd_str}" >> "${GITHUB_STEP_SUMMARY}"
+          printf "<details><summary><code>%s</code></summary>\n" "${cmd_str}" >> "${GITHUB_STEP_SUMMARY}"
           printf '\n```console\n' >> "${GITHUB_STEP_SUMMARY}"
           printf "git@actions> %s\n" "${cmd_str}" >> "${GITHUB_STEP_SUMMARY}"
           printf "%s\n" "${cmd_str}"
           "${@}" > >(tee -a "${stdout_log}" "${GITHUB_STEP_SUMMARY}" | sed 's/^//')  2> >(tee -a "${stderr_log}" "${GITHUB_STEP_SUMMARY}" | sed 's/^/::warning title=::/')
-          sleep 0.1 || true
+          sleep 0.1 || true  # wait for all the subshells to stop writing to files
           printf '\n```\n</details>\n' >> "${GITHUB_STEP_SUMMARY}"
         }
 
