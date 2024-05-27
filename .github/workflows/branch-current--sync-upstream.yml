@@ -55,3 +55,9 @@ jobs:
       run: |
         [[  -n  "${UPSTREAM_SYNC_LOCAL_BRANCH}"  ]]
         git  push  origin  "${UPSTREAM_SYNC_LOCAL_BRANCH}"
+
+    - name: Summary
+      if: ${{  always()  }}
+      continue-on-error: true
+      run: |
+        echo "# Hello world!" > "${GITHUB_SUMMARY}"
