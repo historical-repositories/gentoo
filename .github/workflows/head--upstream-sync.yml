@@ -39,6 +39,7 @@ jobs:
     - name: Config
       run: |
         export GIT_LOG="$HOME/git.log"
+        printf "GIT_LOG=%s\n" "${GIT_LOG}" >> "${GITHUB_ENV}"
         git_n_log() {
           printf "git@actions> " >> "${GIT_LOG}"
           printf "'%s' " git "${@}" >> "${GIT_LOG}"
