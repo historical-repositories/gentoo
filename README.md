@@ -27,4 +27,25 @@ Gentoo has evolved to support a wide variety of processor architectures and user
 
 ### [Current [mirror]](../../tree/head)
 
+This branch synces with the current upstream HEAD branch several times an hour.
+So you will get always a fresh look at the whole commit history.
+
 ### [Historical 2000-07-28 00:35:42 - 2015-08-08 17:58:28 UTC](../../tree/hist/by-date/20000728T003542Z_20150808T175828Z)
+This branch provides a copy of the original CVS repo officially converted to git by Gentoo Linux maintainers, before they switched wholly to git.
+
+## Merged history
+
+### Using `git replace`
+
+Provides you with full hisotry with unchanged commit hashes across all branches.
+This method works only with your local git clone of this repository and you have to clone all branches cloned.
+
+```console
+> git clone --no-checkout 'https://github.com/historical-repositories/gentoo.git'
+...
+```
+
+### Amalgamated branch
+
+This method provides a single branch with an unbroken linear commit history,
+but the commit hashes are rewritten due to the merge.
