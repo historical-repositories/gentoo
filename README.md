@@ -25,7 +25,7 @@ Gentoo has evolved to support a wide variety of processor architectures and user
 
 ## Copies of upstream HEAD branches
 
-### [Current [mirror]](../../tree/head)
+### [Current 2015-08-09 00:38:18 - Now UTC [mirror]](../../tree/head)
 
 This branch synces with the current upstream HEAD branch several times an hour.
 So you will get always a fresh look at the whole commit history.
