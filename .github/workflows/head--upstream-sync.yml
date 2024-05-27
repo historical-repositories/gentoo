@@ -70,22 +70,22 @@ jobs:
         [[  -n  "${UPSTREAM_SYNC_REMOTE_NAME}"  ]]
         [[  -n  "${UPSTREAM_SYNC_REMOTE_URL}"  ]]
         source ~/funcs.sh
-        git_n_log  remote  add  "${UPSTREAM_SYNC_REMOTE_NAME}" "${UPSTREAM_SYNC_REMOTE_URL}"
-        git_n_log  remote  --verbose  ||  true
-        git_n_log  remote  show  "${UPSTREAM_SYNC_REMOTE_NAME}"  ||  true
-        git_n_log  config  --show-scope  --get-regexp  ^  2>&1  |  sed  's/^/::debug::/'  ||  true
+        run_n_log  git  remote  add  "${UPSTREAM_SYNC_REMOTE_NAME}" "${UPSTREAM_SYNC_REMOTE_URL}"
+        run_n_log  git  remote  --verbose  ||  true
+        run_n_log  git  remote  show  "${UPSTREAM_SYNC_REMOTE_NAME}"  ||  true
+        run_n_log  git  config  --show-scope  --get-regexp  ^  2>&1  |  sed  's/^/::debug::/'  ||  true
 
     - name: Pull
       run: |
         [[  -n  "${UPSTREAM_SYNC_REMOTE_NAME}"  ]]
         source  ~/funcs.sh
-        git_n_log  pull  "${UPSTREAM_SYNC_REMOTE_NAME}"  "HEAD"
+        run_n_log  git  pull  "${UPSTREAM_SYNC_REMOTE_NAME}"  "HEAD"
 
     - name: Push
       run: |
         [[  -n  "${UPSTREAM_SYNC_LOCAL_BRANCH}"  ]]
         source  ~/funcs.sh
-        git_n_log  push  origin  "${UPSTREAM_SYNC_LOCAL_BRANCH}"
+        run_n_log  git  push  origin  "${UPSTREAM_SYNC_LOCAL_BRANCH}"
 
     - name: Summary
       if: ${{  always()  }}
