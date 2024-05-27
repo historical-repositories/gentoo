@@ -1,4 +1,7 @@
 on:
+  push:
+    branches:
+    - _sysops
   schedule:
   - cron: "* * * * *"
   workflow_dispatch:
