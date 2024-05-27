@@ -29,6 +29,7 @@ jobs:
       UPSTREAM_SYNC_LOCAL_BRANCH: ${{ vars.UPSTREAM_SYNC_LOCAL_BRANCH }}
       UPSTREAM_SYNC_REMOTE_NAME: ${{ vars.UPSTREAM_SYNC_REMOTE_NAME }}
       UPSTREAM_SYNC_REMOTE_URL: ${{ vars.UPSTREAM_SYNC_REMOTE_URL }}
+      UPSTREAM_SYNC_GIT_CONFIG_COLOR_UI: ${{ vars.UPSTREAM_SYNC_GIT_CONFIG_COLOR_UI }}
 
     steps:
 
@@ -37,6 +38,10 @@ jobs:
       with:
         ref: ${{ vars.UPSTREAM_SYNC_LOCAL_BRANCH }}
         sparse-checkout: '.'
+
+    - name: Config
+      run: |
+        [[ -n "${UPSTREAM_SYNC_GIT_CONFIG_COLOR_UI}" ]] && git config --global color.ui "${UPSTREAM_SYNC_GIT_CONFIG_COLOR_UI}" || true
 
     - name: Add remote
       run: |
