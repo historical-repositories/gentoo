@@ -40,10 +40,7 @@ jobs:
         [[ -n "${UPSTREAM_SYNC_REMOTE_URL}" ]]
         git remote add "${UPSTREAM_SYNC_REMOTE_NAME}" "${UPSTREAM_SYNC_REMOTE_URL}"
         git remote --verbose
-
-    - name: Config
-      run: |
-        git config --show-scope --get-regexp ^
+        git config --show-scope --get-regexp ^ 2>&1 | sed 's/^/::debug::/' || true
 
     - name: Pull
       run: |
