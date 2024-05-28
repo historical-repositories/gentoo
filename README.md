@@ -35,19 +35,20 @@ So you will get always a fresh look at the whole commit history.
 ### [Historical 2000-07-28 00:35:42 - 2015-08-08 17:58:28 UTC](../../tree/hist/by-date/20000728T003542Z_20150808T175828Z)
 This branch provides a copy of the original CVS repo officially converted to git by Gentoo Linux maintainers, before they switched wholly to git.
 
-## Merged history
 
-### Using `git replace`
+## Merged History Options
 
-Provides you with full hisotry with unchanged commit hashes across all branches.
-This method works only with your local git clone of this repository and you have to clone all branches cloned.
+### Local `git replace`
+
+Gain full history with original commit hashes in your local clone. Requires cloning all branches.
 
 ```console
-> git clone --mirror --branch='head' 'https://github.com/historical-repositories/gentoo.git' 'gentoo-historical'
-> git fetch origin 'refs/replace/*:refs/replace/*'
+git clone --mirror --branch='head' 'https://github.com/historical-repositories/gentoo.git' 'gentoo-historical'
+git fetch origin 'refs/replace/*:refs/replace/*'
 ```
 
-### Amalgamated branch
+`git` now generates a unified view of the branches just for you.
 
-This method provides a single branch with an unbroken linear commit history,
-but the commit hashes are rewritten due to the merge.
+### Unified Branch
+
+Real unified commit history in a single, continuous branch. Note: Commit hashes are altered from the original due to merging.
