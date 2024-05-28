@@ -3,18 +3,16 @@
 > **A Meta-Distribution Known for Flexibility and Performance**
 
 Gentoo Linux is an open-source, Unix-like operating system that is both flexible and customizable.
-It is unique among Linux distributions due to its Portage package management system,
+It stands out among Linux distributions due to its Portage package management system,
 which allows users to compile the source code locally according to their preferences,
 often resulting in optimized performance for specific types of computers.
 
-Gentoo is designed to be modular, portable, and easy to maintain,
-catering to users who desire a system tailored precisely to their needs and hardware.
+Designed to be modular, portable, and easy to maintain, Gentoo caters to users
+who desire a system tailored precisely to their needs and hardware.
 
-Named after the fast-swimming gentoo penguin, the distribution emphasizes the potential for speed improvements
-through machine-specific optimization.
+Named after the fast-swimming gentoo penguin, the distribution emphasizes the potential for speed improvements through machine-specific optimization.
 
-Initially created by Daniel Robbins as Enoch Linux,
-Gentoo has evolved to support a wide variety of processor architectures and user environments, from desktops to servers.
+Initially created by Daniel Robbins as Enoch Linux, Gentoo has evolved to support a wide variety of processor architectures and user environments, from desktops to servers.
 
 [Gentoo Linux - Wikipedia]: https://en.wikipedia.org/wiki/Gentoo_linux
 [Gentoo Wiki]: https://wiki.gentoo.org/
@@ -27,27 +25,28 @@ Gentoo has evolved to support a wide variety of processor architectures and user
 
 ### [Current 2015-08-09 00:38:18 - Now UTC [mirror]](../../tree/head)
 
-This branch synces with the current upstream HEAD branch several times an hour.
-So you will get always a fresh look at the whole commit history.
+This branch syncs with the current upstream HEAD branch several times an hour,
+providing a fresh look at the entire commit history.
 
 | | | |
 | --- | --- | --- |
 [Initial commit][head-initial-commit] | `56bd759df1d0c750a065b8c845e93d5dfa6b549d` | [Browse history since][head-initial-browse-since]
 
 ### [Historical 2000-07-28 00:35:42 - 2015-08-08 17:58:28 UTC](../../tree/hist/by-date/20000728T003542Z_20150808T175828Z)
-This branch provides a copy of the original CVS repo officially converted to git by Gentoo Linux maintainers, before they switched wholly to git.
+
+This branch syncs with the current upstream HEAD branch several times an hour, providing a fresh look at the entire commit history.
 
 |  | Hash | |
 | --- | --- | ---
 [Last commit][historical-last-commit] | `2ebda5cd08db6bdf193adaa6de33239a83a73af0` |
 [Initial commit][historical-initial-commit] | `499e2f00b49f32976e1749afcd4140dd51831917` | [Browse history since][historical-initial-browse-since]
 
-## How to
+## How to Use
 
-### Download full `git` clone of this repository
+### Download a Full `git` Clone of This Repository
 
 This is done using the `--mirror` option, which fetches a full 1:1 clone, not just a subset of git refs as usual.
-This is important, so that all branches and `git` [replace refs](https://git-scm.com/docs/git-replace) are fully downloaded.
+This is important to ensure that all branches and `git` [replace refs](https://git-scm.com/docs/git-replace) are fully downloaded.
 
 ```console
 ➜ git clone --mirror --branch='head' 'https://github.com/historical-repositories/gentoo.git' 'gentoo-historical'
@@ -67,54 +66,13 @@ Alternative way
 ➜ git fetch origin 'refs/replace/*:refs/replace/*'
 -->
 
-### On unified view with `git` replace
+### Unified View with the `git` Replace Feature
 
-`git` now generates a unified view of the branches just for you.
+For more details on the unified view with git replace, please refer to [the wiki](https://github.com/historical-repositories/gentoo/wiki/On-%60git-replace%60-Unified-View).
 
-All the commits have original hashes, and only the so called graft commits are missing.
-These graft commits contain the initial import of data from previous repository, so they actually have no data itself.
+### Checkout Working Tree at Specific Commit
 
-This is how the unified view looks like at the replaced graft point:
-
-```plain
-commit c1de71edb35b118c3244c0d9d1b3f97c93d41969
-Author: Robin H. Johnson <robbat2@gentoo.org>
-Date:   Sat Aug 8 22:26:10 2015 -0700
-
-    Update some skeleton file comments to Git instead of CVS.
-    
-    Signed-off-by: Robin H. Johnson <robbat2@gentoo.org>
-
-commit 56bd759df1d0c750a065b8c845e93d5dfa6b549d (replaced)
-Author: Sebastian Pipping <sping@gentoo.org>
-Date:   Sat Aug 8 17:58:28 2015 +0000
-
-    Mask upcoming dev-libs/iniparser:4
-```
-
-As you can see above, the last commit of the historical repository now shows the hash of the initial (graft) commit of the new repository and is tagged as `replaced`.
-And the initial (graft) commit of the new repository is completely missing.
-
-However, when directly referenced, the commit with original hash is still present.
-
-```console
-➜ git log -n1 2ebda5cd08db6bdf193adaa6de33239a83a73af0  # < hash of the last commit of the old repo
-commit 2ebda5cd08db6bdf193adaa6de33239a83a73af0 (hist/by-name/cvs-repo, hist/by-date/20000728T003542Z_20150808T175828Z)
-Author: Sebastian Pipping <sping@gentoo.org>
-Date:   Sat Aug 8 17:58:28 2015 +0000
-
-    Mask upcoming dev-libs/iniparser:4
-➜ git log -n1 56bd759df1d0c750a065b8c845e93d5dfa6b549d  # < hash of the initial (graft) commit of the new repo
-commit 56bd759df1d0c750a065b8c845e93d5dfa6b549d (replaced)
-Author: Sebastian Pipping <sping@gentoo.org>
-Date:   Sat Aug 8 17:58:28 2015 +0000
-
-    Mask upcoming dev-libs/iniparser:4
-```
-
-### How to checkout working tree at specific commit
-
-#### By exporting an archive of the files
+#### By Exporting an Archive of the Files
 
 This saves you storage, since only the files are exported.
 
@@ -127,7 +85,7 @@ This saves you storage, since only the files are exported.
 8.0K    .
 ```
 
-#### Using local `git clone`
+#### Using Local `git clone`
 
 ```console
 ➜ # go to the target directory
@@ -143,7 +101,7 @@ This saves you storage, since only the files are exported.
 
 **Footnotes**:
 
-The "Browse history since" links have to be regenerated for latest commits to be browsable (not usually needed though).
+The “Browse history since” links have to be regenerated for the latest commits to be browsable (not usually needed though).
 
 ```sh
 branch=head; initial_commit=56bd759df1d0c750a065b8c845e93d5dfa6b549d ;
