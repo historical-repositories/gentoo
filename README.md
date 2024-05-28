@@ -116,7 +116,7 @@ Date:   Sat Aug 8 17:58:28 2015 +0000
 
 #### By exporting an archive of the files
 
-This saves I/O since only the files are exported.
+This saves you storage, since only the files are exported.
 
 ```console
 ➜ # go to the target directory
