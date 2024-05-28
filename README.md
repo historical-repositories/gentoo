@@ -44,7 +44,7 @@ This method works only with your local git clone of this repository and you have
 
 ```console
 > git clone --mirror --branch='head' 'https://github.com/historical-repositories/gentoo.git' 'gentoo-historical'
-...
+> git fetch origin 'refs/replace/*:refs/replace/*'
 ```
 
 ### Amalgamated branch
