@@ -42,7 +42,7 @@ This branch provides a copy of the original CVS repo officially converted to git
 
 Gain full history with original commit hashes in your local clone. Requires cloning all branches.
 
-```console
+```sh
 git clone --mirror --branch='head' 'https://github.com/historical-repositories/gentoo.git' 'gentoo-historical'
 git fetch origin 'refs/replace/*:refs/replace/*'
 ```
