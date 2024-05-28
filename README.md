@@ -50,7 +50,7 @@ This is done using the `--mirror` option, which fetches a full 1:1 clone, not ju
 This is important, so that all branches and `git` [replace refs](https://git-scm.com/docs/git-replace) are fully downloaded.
 
 ```console
-> git clone --mirror --branch='head' 'https://github.com/historical-repositories/gentoo.git' 'gentoo-historical'
+➜ git clone --mirror --branch='head' 'https://github.com/historical-repositories/gentoo.git' 'gentoo-historical'
 Cloning into bare repository 'gentoo-historical'...
 remote: Enumerating objects: 12339178, done.
 remote: Counting objects: 100% (27275/27275), done.
@@ -63,8 +63,8 @@ Resolving deltas: 100% (9074172/9074172), done.
 <!--
 TODO:
 Alternative way
-git clone ...
-git fetch origin 'refs/replace/*:refs/replace/*'
+➜ git clone ...
+➜ git fetch origin 'refs/replace/*:refs/replace/*'
 -->
 
 ### On unified view with `git` replace
@@ -112,12 +112,43 @@ Date:   Sat Aug 8 17:58:28 2015 +0000
     Mask upcoming dev-libs/iniparser:4
 ```
 
-<!--
-  The "Browse since" links need to be regenerated for new commit to be browsable.
-  ```sh
-  echo "../../commits/head/?after=$(git rev-list -n1 head)+$(( "$(git rev-list --count "56bd759df1d0c750a065b8c845e93d5dfa6b549d..head")" - 1 ))"
-  ```
--->
+### How to checkout working tree at specific commit
+
+#### By exporting an archive of the files
+
+This saves I/O since only the files are exported.
+
+```console
+➜ # go to the target directory
+➜ git --git-dir=../gentoo-historical/ archive 499e2f00b49f32976e1749afcd4140dd51831917 | tar -x
+➜ ls -l
+-rw-r--r--  1 rindeal rindeal  138 Jul 28  2000 header.txt
+➜ du -hd0
+8.0K    .
+```
+
+#### Using local `git clone`
+
+```console
+➜ # go to the target directory
+➜ git clone --no-checkout ../gentoo-historical .
+➜ 499e2f00b49f32976e1749afcd4140dd51831917
+➜ ls -l
+-rw-r--r--  1 rindeal rindeal  138 Jul 28  2000 header.txt
+➜ du -hd0
+3.2G    .
+````
+
+---
+
+**Footnotes**:
+
+The "Browse history since" links have to be regenerated for latest commits to be browsable (not usually needed though).
+
+```sh
+branch=head; initial_commit=56bd759df1d0c750a065b8c845e93d5dfa6b549d ;
+echo "../../commits/${branch}/?after=$(git rev-list -n1 ${branch})+$(( "$(git rev-list --count "${initial_commit}..${branch}")" - 1 ))"
+```
 
 [head-initial-browse-since]:     ../../commits/head/?after=69185febec321c8ff4e44df069ddd4916aa1e071+834050
 [head-initial-commit]:           ../../commit/56bd759df1d0c750a065b8c845e93d5dfa6b549d
