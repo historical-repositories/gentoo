@@ -68,7 +68,7 @@ Alternative way
 
 ### Unified View with the `git` Replace Feature
 
-For more details on the unified view with git replace, please refer to [the wiki](https://github.com/historical-repositories/gentoo/wiki/On-%60git-replace%60-Unified-View).
+For more details on the unified view with git replace, please refer to [the wiki](https://github.com/historical-repositories/gentoo/wiki/Unified-View-with-the-git-Replace-Feature).
 
 ### Checkout Working Tree at Specific Commit
 
