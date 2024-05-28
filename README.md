@@ -30,25 +30,98 @@ Gentoo has evolved to support a wide variety of processor architectures and user
 This branch synces with the current upstream HEAD branch several times an hour.
 So you will get always a fresh look at the whole commit history.
 
-[Initial commit](../../commit/56bd759df1d0c750a065b8c845e93d5dfa6b549d)
+| | | |
+| --- | --- | --- |
+[Initial commit][head-initial-commit] | `56bd759df1d0c750a065b8c845e93d5dfa6b549d` | [Browse history since][head-initial-browse-since]
 
 ### [Historical 2000-07-28 00:35:42 - 2015-08-08 17:58:28 UTC](../../tree/hist/by-date/20000728T003542Z_20150808T175828Z)
 This branch provides a copy of the original CVS repo officially converted to git by Gentoo Linux maintainers, before they switched wholly to git.
 
-[Last commit](../../commit/2ebda5cd08db6bdf193adaa6de33239a83a73af0)
-## Merged History Options
+|  | Hash | |
+| --- | --- | ---
+[Last commit][historical-last-commit] | `2ebda5cd08db6bdf193adaa6de33239a83a73af0` |
+[Initial commit][historical-initial-commit] | `499e2f00b49f32976e1749afcd4140dd51831917` | [Browse history since][historical-initial-browse-since]
 
-### Local `git replace`
+## How to
 
-Gain full history with original commit hashes in your local clone. Requires cloning all branches.
+### Download full `git` clone of this repository
 
-```sh
-git clone --mirror --branch='head' 'https://github.com/historical-repositories/gentoo.git' 'gentoo-historical'
-git fetch origin 'refs/replace/*:refs/replace/*'
+This is done using the `--mirror` option, which fetches a full 1:1 clone, not just a subset of git refs as usual.
+This is important, so that all branches and `git` [replace refs](https://git-scm.com/docs/git-replace) are fully downloaded.
+
+```console
+> git clone --mirror --branch='head' 'https://github.com/historical-repositories/gentoo.git' 'gentoo-historical'
+Cloning into bare repository 'gentoo-historical'...
+remote: Enumerating objects: 12339178, done.
+remote: Counting objects: 100% (27275/27275), done.
+remote: Compressing objects: 100% (11504/11504), done.
+remote: Total 12339178 (delta 16629), reused 23718 (delta 15723), pack-reused 12311903
+Receiving objects: 100% (12339178/12339178), 2.72 GiB | 27.55 MiB/s, done.
+Resolving deltas: 100% (9074172/9074172), done.
 ```
+
+<!--
+TODO:
+Alternative way
+git clone ...
+git fetch origin 'refs/replace/*:refs/replace/*'
+-->
+
+### On unified view with `git` replace
 
 `git` now generates a unified view of the branches just for you.
 
-### Unified Branch
+All the commits have original hashes, and only the so called graft commits are missing.
+These graft commits contain the initial import of data from previous repository, so they actually have no data itself.
 
-Real unified commit history in a single, continuous branch. Note: Commit hashes are altered from the original due to merging.
+This is how the unified view looks like at the replaced graft point:
+
+```plain
+commit c1de71edb35b118c3244c0d9d1b3f97c93d41969
+Author: Robin H. Johnson <robbat2@gentoo.org>
+Date:   Sat Aug 8 22:26:10 2015 -0700
+
+    Update some skeleton file comments to Git instead of CVS.
+    
+    Signed-off-by: Robin H. Johnson <robbat2@gentoo.org>
+
+commit 56bd759df1d0c750a065b8c845e93d5dfa6b549d (replaced)
+Author: Sebastian Pipping <sping@gentoo.org>
+Date:   Sat Aug 8 17:58:28 2015 +0000
+
+    Mask upcoming dev-libs/iniparser:4
+```
+
+As you can see above, the last commit of the historical repository now shows the hash of the initial (graft) commit of the new repository and is tagged as `replaced`.
+And the initial (graft) commit of the new repository is completely missing.
+
+However, when directly referenced, the commit with original hash is still present.
+
+```console
+➜ git log -n1 2ebda5cd08db6bdf193adaa6de33239a83a73af0  # < hash of the last commit of the old repo
+commit 2ebda5cd08db6bdf193adaa6de33239a83a73af0 (hist/by-name/cvs-repo, hist/by-date/20000728T003542Z_20150808T175828Z)
+Author: Sebastian Pipping <sping@gentoo.org>
+Date:   Sat Aug 8 17:58:28 2015 +0000
+
+    Mask upcoming dev-libs/iniparser:4
+➜ git log -n1 56bd759df1d0c750a065b8c845e93d5dfa6b549d  # < hash of the initial (graft) commit of the new repo
+commit 56bd759df1d0c750a065b8c845e93d5dfa6b549d (replaced)
+Author: Sebastian Pipping <sping@gentoo.org>
+Date:   Sat Aug 8 17:58:28 2015 +0000
+
+    Mask upcoming dev-libs/iniparser:4
+```
+
+<!--
+  The "Browse since" links need to be regenerated for new commit to be browsable.
+  ```sh
+  echo "../../commits/head/?after=$(git rev-list -n1 head)+$(( "$(git rev-list --count "56bd759df1d0c750a065b8c845e93d5dfa6b549d..head")" - 1 ))"
+  ```
+-->
+
+[head-initial-browse-since]:     ../../commits/head/?after=69185febec321c8ff4e44df069ddd4916aa1e071+834050
+[head-initial-commit]:           ../../commit/56bd759df1d0c750a065b8c845e93d5dfa6b549d
+
+[historical-initial-browse-since]:  ../../commits/hist/by-date/20000728T003542Z_20150808T175828Z/?after=2ebda5cd08db6bdf193adaa6de33239a83a73af0+788890
+[historical-last-commit]:           ../../commit/2ebda5cd08db6bdf193adaa6de33239a83a73af0
+[historical-initial-commit]:        ../../commit/499e2f00b49f32976e1749afcd4140dd51831917
