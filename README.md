@@ -21,7 +21,7 @@ Initially created by Daniel Robbins as Enoch Linux, Gentoo has evolved to suppor
 [Gentoo Linux - Simple English Wikipedia, the free encyclopedia]: https://simple.wikipedia.org/wiki/Gentoo_Linux
 
 
-## Copies of upstream HEAD branches
+## Overview of the Copies of Upstream HEAD Branches
 
 ### [Current 2015-08-09 00:38:18 - Now UTC [mirror]](../../tree/head)
 
