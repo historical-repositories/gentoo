@@ -35,7 +35,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
       with:
-        ref: ${{ vars.UPSTREAM_SYNC_LOCAL_BRANCH }}
+        ref: ${{ vars.UPSTREAM_SYNC_LOCAL_BRANCH || UNDECLARED_VARIABLE }}
         sparse-checkout: '.'
 
     - name: Config
