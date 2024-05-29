@@ -27,7 +27,7 @@ jobs:
         shell: bash --noprofile --norc -o errexit -o pipefail -o nounset {0}
 
     env:
-      UPSTREAM_SYNC_REMOTE_URL: ${{ vars.UPSTREAM_SYNC_REMOTE_URL }}
+      UPSTREAM_SYNC_REMOTE_URL: ${{ vars.UPSTREAM_SYNC_REMOTE_URL || 'UNBOUND_VARIABLE' }}
       UPSTREAM_SYNC_REMOTE_NAME: upstream
 
     steps:
@@ -35,7 +35,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
       with:
-        ref: ${{ vars.UPSTREAM_SYNC_LOCAL_BRANCH || 'UNDECLARED_VARIABLE' }}
+        ref: 'head'
         sparse-checkout: '.'
 
     - name: Config
