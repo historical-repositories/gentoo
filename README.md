@@ -34,7 +34,7 @@ providing a fresh look at the entire commit history.
 
 ### [Historical 2000-07-28 00:35:42 - 2015-08-08 17:58:28 UTC](../../tree/hist/by-date/20000728T003542Z_20150808T175828Z)
 
-This branch syncs with the current upstream HEAD branch several times an hour, providing a fresh look at the entire commit history.
+This branch provides a copy of the original CVS repo officially converted to git by Gentoo Linux maintainers, before they fully switched to git.
 
 |  | Hash | |
 | --- | --- | ---
