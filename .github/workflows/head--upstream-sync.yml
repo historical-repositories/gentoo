@@ -2,7 +2,7 @@ name: "Sync our 'head' with upstream HEAD"
 
 on:
   schedule:
-    - cron: '42/29 * * * *'
+    - cron: '42/64 * * * *'
   push:
     paths:
     - .github/workflows/head--upstream-sync.yml
