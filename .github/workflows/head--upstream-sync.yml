@@ -27,10 +27,8 @@ jobs:
         shell: bash --noprofile --norc -o errexit -o pipefail -o nounset {0}
 
     env:
-      UPSTREAM_SYNC_LOCAL_BRANCH: ${{ vars.UPSTREAM_SYNC_LOCAL_BRANCH }}
-      UPSTREAM_SYNC_REMOTE_NAME: ${{ vars.UPSTREAM_SYNC_REMOTE_NAME }}
       UPSTREAM_SYNC_REMOTE_URL: ${{ vars.UPSTREAM_SYNC_REMOTE_URL }}
-      UPSTREAM_SYNC_GIT_CONFIG_COLOR_UI: ${{ vars.UPSTREAM_SYNC_GIT_CONFIG_COLOR_UI }}
+      UPSTREAM_SYNC_REMOTE_NAME: upstream
 
     steps:
 
@@ -67,9 +65,9 @@ jobs:
 
     - name: Add remote
       run: |
+        source ~/funcs.sh
         [[  -n  "${UPSTREAM_SYNC_REMOTE_NAME}"  ]]
         [[  -n  "${UPSTREAM_SYNC_REMOTE_URL}"  ]]
-        source ~/funcs.sh
         run_n_log  git  remote  add  "${UPSTREAM_SYNC_REMOTE_NAME}" "${UPSTREAM_SYNC_REMOTE_URL}"
         run_n_log  git  remote  --verbose  ||  true
         run_n_log  git  remote  show  "${UPSTREAM_SYNC_REMOTE_NAME}"  ||  true
@@ -77,15 +75,15 @@ jobs:
 
     - name: Pull
       run: |
-        [[  -n  "${UPSTREAM_SYNC_REMOTE_NAME}"  ]]
         source  ~/funcs.sh
+        [[  -n  "${UPSTREAM_SYNC_REMOTE_NAME}"  ]]
         run_n_log  git  pull  "${UPSTREAM_SYNC_REMOTE_NAME}"  "HEAD"
 
     - name: Push
       run: |
-        [[  -n  "${UPSTREAM_SYNC_LOCAL_BRANCH}"  ]]
         source  ~/funcs.sh
-        run_n_log  git  push  origin  "${UPSTREAM_SYNC_LOCAL_BRANCH}"
+        [[  -n  "${UPSTREAM_SYNC_LOCAL_BRANCH}"  ]]
+        run_n_log  git  push  origin  "head"
 
     - name: Summary
       if: ${{  always()  }}
