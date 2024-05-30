@@ -38,7 +38,7 @@ This branch provides a copy of the original CVS repo officially converted to git
 
 |  | Hash | |
 | --- | --- | ---
-[Last commit][historical-last-commit] | `2ebda5cd08db6bdf193adaa6de33239a83a73af0` |
+[Last commit][historical-last-commit] | `2ebda5cd08db6bdf193adaa6de33239a83a73af0` | [Browse history before][historical-last-browse-before]
 [Initial commit][historical-initial-commit] | `499e2f00b49f32976e1749afcd4140dd51831917` | [Browse history since][historical-initial-browse-since]
 
 ## How to Use
@@ -111,6 +111,7 @@ echo "../../commits/${branch}/?after=$(git rev-list -n1 ${branch})+$(( "$(git re
 [head-initial-browse-since]:     ../../commits/head/?after=69185febec321c8ff4e44df069ddd4916aa1e071+834050
 [head-initial-commit]:           ../../commit/56bd759df1d0c750a065b8c845e93d5dfa6b549d
 
+[historical-last-browse-before]:    ../../commits/hist/by-date/20000728T003542Z_20150808T175828Z/
 [historical-initial-browse-since]:  ../../commits/hist/by-date/20000728T003542Z_20150808T175828Z/?after=2ebda5cd08db6bdf193adaa6de33239a83a73af0+788890
 [historical-last-commit]:           ../../commit/2ebda5cd08db6bdf193adaa6de33239a83a73af0
 [historical-initial-commit]:        ../../commit/499e2f00b49f32976e1749afcd4140dd51831917
