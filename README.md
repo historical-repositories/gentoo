@@ -25,7 +25,7 @@ Initially created by Daniel Robbins as Enoch Linux, Gentoo has evolved to suppor
 
 ### [Current 2015-08-09 00:38:18 - Now UTC [mirror]](../../tree/head)
 
-This branch syncs with the current upstream HEAD branch every hour or so,
+This branch syncs with the current upstream HEAD branch hourly,
 providing a fresh look at the entire commit history.
 
 | | | |
